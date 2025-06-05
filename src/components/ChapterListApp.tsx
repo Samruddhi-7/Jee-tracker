@@ -1,11 +1,11 @@
 'use client'
 import React, { useState, useEffect, useMemo } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   Moon, 
   Sun, 
@@ -1866,8 +1866,7 @@ const mockChapters: Chapter[] = [
     "status": "Completed",
     "isWeakChapter": true
   }
-]
-
+];
 
 // Random icon assignment
 const chapterIcons = [Book, Atom, Zap, CircuitBoard, Target, TrendingUp];
@@ -2079,7 +2078,7 @@ const ChapterListApp = () => {
 
   // Get filtered and sorted chapters
   const filteredChapters = useMemo(() => {
-    let filtered = mockChapters.filter(chapter => {
+    const filtered = mockChapters.filter(chapter => {
       // Filter by subject
       if (chapter.subject !== activeSubject) return false;
       
@@ -2108,8 +2107,8 @@ const ChapterListApp = () => {
 
     // Sort chapters
     filtered.sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      let aValue: string | number;
+      let bValue: string | number;
       
       switch (filters.sortBy) {
         case 'chapter':
@@ -2194,7 +2193,7 @@ const ChapterListApp = () => {
         </div>
 
         {/* Subject Tabs */}
-        <Tabs value={activeSubject} onValueChange={(value) => setActiveSubject(value as any)} className="mb-6">
+        <Tabs value={activeSubject} onValueChange={(value) => setActiveSubject(value as 'Physics' | 'Chemistry' | 'Mathematics')} className="mb-6">
           <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:grid-cols-3">
             {(['Physics', 'Chemistry', 'Mathematics'] as const).map((subject) => {
               const IconComponent = getSubjectIcon(subject);
@@ -2295,7 +2294,7 @@ const ChapterListApp = () => {
                 <div className="flex gap-2">
                   <Select
                     value={filters.sortBy}
-                    onValueChange={(value) => updateFilters({ sortBy: value as any })}
+                    onValueChange={(value) => updateFilters({ sortBy: value as FilterState['sortBy'] })}
                   >
                     <SelectTrigger className="flex-1">
                       <SelectValue />
